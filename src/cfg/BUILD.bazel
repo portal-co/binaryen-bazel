@@ -1,0 +1,24 @@
+load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
+
+COPTS = BASE_COPTS
+
+exports_files(["cfg-traversal.h"])
+
+cc_library(
+    name = "cfg",
+    srcs = [
+        "Relooper.cpp",
+        "//src/ir:hdrs",
+        "//src:wasm-hdrs",
+    ] + glob(["*.h"]),
+    additional_compiler_inputs = ["//src:wasm-delegations"],
+    deps = ["//src/support"],
+    copts = COPTS + ["-I$(@)/src"],
+    toolchains = TOOLCHAINS,
+    visibility = [
+        "//src:__pkg__",
+        "//src/analysis:__pkg__",
+        "//src/ir:__pkg__"
+    ]
+)
+

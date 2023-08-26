@@ -1,0 +1,88 @@
+load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
+
+COPTS = BASE_COPTS
+
+exports_files(["asm_v_wasm.h", "gen-s-parser.inc"])
+
+filegroup(
+    name = "wasm-hdrs",
+    srcs = glob(["*.h"]) + ["//src/ir:hdrs"],
+    visibility = [
+        "//src/analysis:__pkg__",
+        "//src/cfg:__pkg__",
+        "//src/ir:__pkg__",
+        "//src/passes:__pkg__",
+        "//src/support:__pkg__",
+        "//src/tools/fuzzing:__pkg__",
+        "//src/tools/wasm-split:__pkg__",
+        "//src/wasm:__pkg__"
+    ]
+)
+
+filegroup(
+    name = "wasm-delegations",
+    srcs = [
+        "//src:wasm-delegations.def",
+        "//src:wasm-delegations-fields.def"
+    ],
+    visibility = [
+        "//src/analysis:__pkg__",
+        "//src/cfg:__pkg__",
+        "//src/ir:__pkg__",
+        "//src/passes:__pkg__",
+        "//src/tools/fuzzing:__pkg__",
+        "//src/tools/wasm-split:__pkg__",
+        "//src/wasm:__pkg__"
+    ]
+)
+
+cc_library(
+    name = "binaryen",
+    alwayslink = True,
+    srcs = [
+        "binaryen-c.cpp",
+        "binaryen-c.h"
+    ],
+    additional_compiler_inputs = [":wasm-delegations"],
+    deps = [
+        "//src/passes",
+        "//src/wasm",
+        "//src/asmjs",
+        "//src/emscripten-optimizer",
+        "//src/ir",
+        "//src/cfg",
+        "//src/support",
+        "//src/analysis"
+    ], # "//src/support"],
+    copts = COPTS + ["-I$(@)/src"],
+    toolchains = TOOLCHAINS,
+    visibility = ["//visibility:public"]
+)
+
+################
+# if(EMSCRIPTEN)
+#   set(binaryen_emscripten_SOURCES
+#     src/binaryen-c.cpp
+#     ${binaryen_HEADERS}
+#   )
+
+#   # binaryen.js WebAssembly variant
+#   add_executable(binaryen_wasm
+#                  ${binaryen_emscripten_SOURCES})
+#   target_link_libraries(binaryen_wasm wasm asmjs emscripten-optimizer passes ir cfg support analysis wasm)
+#   target_link_libraries(binaryen_wasm "-sFILESYSTEM")
+#   target_link_libraries(binaryen_wasm "-sEXPORT_NAME=Binaryen")
+#   target_link_libraries(binaryen_wasm "-sNODERAWFS=0")
+#   target_link_libraries(binaryen_wasm "-sEXPORT_ES6")
+#   target_link_libraries(binaryen_wasm "-sEXPORTED_RUNTIME_METHODS=allocateUTF8OnStack,stringToAscii")
+#   target_link_libraries(binaryen_wasm "-sEXPORTED_FUNCTIONS=_malloc,_free")
+#   target_link_libraries(binaryen_wasm "--post-js=${CMAKE_CURRENT_SOURCE_DIR}/src/js/binaryen.js-post.js")
+#   target_link_libraries(binaryen_wasm "-msign-ext")
+#   target_link_libraries(binaryen_wasm "-mbulk-memory")
+#   target_link_libraries(binaryen_wasm optimized "--closure=1")
+#   target_link_libraries(binaryen_wasm optimized "--closure-args=\"--language_in=ECMASCRIPT6 --language_out=ECMASCRIPT6\"")
+#   # TODO: Fix closure warnings! (#5062)
+#   target_link_libraries(binaryen_wasm optimized "-Wno-error=closure")
+#   target_link_libraries(binaryen_wasm optimized "-flto")
+#   target_link_libraries(binaryen_wasm debug "--profiling")
+#   install(TARGETS binaryen_wasm DESTINATION ${CMAKE_INSTALL_BINDIR})

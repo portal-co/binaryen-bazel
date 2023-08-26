@@ -1,0 +1,9 @@
+module(
+    name = "binaryen",
+    version = "114.0.0",
+    compatibility_level = 114,
+)
+
+bazel_dep(name = "platforms", version = "0.0.7")
+bazel_dep(name = "bazel_skylib", version = "1.4.2")
+bazel_dep(name = "cc_config",    version = "1.0.0")

@@ -1,0 +1,43 @@
+load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
+
+COPTS = BASE_COPTS
+
+# exports_files(["cfg-traversal.h"])
+
+cc_library(
+    name = "wasm",
+    srcs = [
+        "literal.cpp",
+        "parsing.cpp",
+        "wasm.cpp",
+        "wasm-binary.cpp",
+        "wasm-debug.cpp",
+        "wasm-emscripten.cpp",
+        "wasm-interpreter.cpp",
+        "wasm-io.cpp",
+        "wasm-ir-builder.cpp",
+        "wasm-s-parser.cpp",
+        "wasm-stack.cpp",
+        "wasm-type.cpp",
+        "wasm-validator.cpp",
+        "wat-lexer.cpp",
+        "wat-parser.cpp",
+        # "//src/ir:hdrs",
+        "//src:wasm-hdrs",
+    ] + glob(["*.h"]),
+    additional_compiler_inputs = [
+        "//src:gen-s-parser.inc",
+        "//src:wasm-delegations"
+    ],
+    deps = [
+        "//src/asmjs",
+        "//src/emscripten-optimizer",
+        "//src/support"
+    ],
+    copts = COPTS + ["-I$(@)/src"],
+    toolchains = TOOLCHAINS,
+    visibility = [
+        "//src:__pkg__",
+    ]
+)
+

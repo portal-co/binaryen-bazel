@@ -1,0 +1,26 @@
+load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
+
+COPTS = BASE_COPTS
+
+cc_library(
+    name = "fuzzing",
+    srcs = [
+        "fuzzing.cpp",
+        "heap-types.cpp",
+        "random.cpp",
+        "//src:wasm-hdrs",
+        "//src/tools:fuzzing.h",
+        "//src/tools:optimization-options.h",
+        "//src/tools:tool-options.h"
+    ] + glob(["*.h"]),
+    additional_compiler_inputs = ["//src:wasm-delegations"],
+    deps = ["//src/support"],
+    copts = COPTS + ["-I$(@)/src"],
+    toolchains = TOOLCHAINS,
+    visibility = [
+        # "//src:__pkg__",
+        # "//src/analysis:__pkg__",
+        # "//src/ir:__pkg__"
+    ]
+)
+

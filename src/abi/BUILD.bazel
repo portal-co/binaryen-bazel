@@ -1,0 +1,5 @@
+filegroup(
+    name = "hdrs",
+    srcs = ["js.h", "stack.h"],
+    visibility = ["//src/passes:__pkg__"]
+)

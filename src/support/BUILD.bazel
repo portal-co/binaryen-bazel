@@ -1,0 +1,47 @@
+load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
+
+COPTS = BASE_COPTS
+
+cc_library(
+    name = "support",
+    srcs = [
+        "archive.cpp",
+        "bits.cpp",
+        "colors.cpp",
+        "command-line.cpp",
+        "debug.cpp",
+        "dfa_minimization.cpp",
+        "file.cpp",
+        "istring.cpp",
+        "path.cpp",
+        "safe_integer.cpp",
+        "threads.cpp",
+        "utilities.cpp",
+
+        "//config/cc:config.h",
+        "//src:wasm-hdrs",
+    ] + glob(["*.h"]) + select({
+        # if (EMSCRIPTEN) [
+        #     "suffix_tree.cpp",
+        #     "suffix_tree_node.cpp"
+        # ]
+        "//conditions:default": []
+    }),
+    copts = COPTS + [
+        "-I$(@)/src",
+        "-I$(@)/config/cc"
+    ],
+    toolchains = TOOLCHAINS,
+    visibility = [
+        "//src:__pkg__",
+        "//src/analysis:__pkg__",
+        "//src/asmjs:__pkg__",
+        "//src/cfg:__pkg__",
+        "//src/emscripten-optimizer:__pkg__",
+        "//src/ir:__pkg__",
+        "//src/tools/fuzzing:__pkg__",
+        "//src/tools/wasm-split:__pkg__",
+        "//src/wasm:__pkg__"
+    ]
+)
+

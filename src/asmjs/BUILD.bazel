@@ -1,0 +1,30 @@
+load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
+
+COPTS = BASE_COPTS
+
+exports_files(["cfg-traversal.h"])
+
+cc_library(
+    name = "asmjs",
+    srcs = [
+        "asm_v_wasm.cpp",
+        "asmangle.cpp",
+        "shared-constants.cpp",
+        "//src:asm_v_wasm.h"
+    ] + glob(["*.h"]),
+    deps = [
+        "//src/emscripten-optimizer",
+        "//src/support"
+    ],
+    copts = COPTS + [
+        "-I$(@)/src",
+        "-I$(@)/src/asmjs"
+    ],
+    toolchains = TOOLCHAINS,
+    visibility = [
+        "//src/passes:__pkg__",
+        "//src/wasm:__pkg__",
+        "//src:__pkg__"
+    ]
+)
+

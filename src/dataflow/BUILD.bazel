@@ -1,0 +1,5 @@
+filegroup(
+    name = "hdrs",
+    srcs = glob(["*.h"]),
+    visibility = ["//src/passes:__pkg__"]
+)

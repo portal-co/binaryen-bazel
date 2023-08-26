@@ -1,0 +1,44 @@
+load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
+
+COPTS = BASE_COPTS
+
+cc_binary(
+    name = "wasm-split",
+    srcs = [
+        "//src:wasm-hdrs",
+    ] + glob(["*.h"]),
+    # additional_compiler_inputs = ["//src:wasm-delegations"],
+    deps = [
+        "//src:binaryen",
+        ":wasm-split-impl",
+        # "//src/support"
+    ],
+    copts = COPTS + ["-I$(@)/src"],
+    toolchains = TOOLCHAINS,
+    visibility = [
+        # "//src:__pkg__",
+        # "//src/analysis:__pkg__",
+        # "//src/ir:__pkg__"
+    ]
+)
+
+cc_library(
+    name = "wasm-split-impl",
+    srcs = [
+        "wasm-split.cpp",
+        "split-options.cpp",
+        "instrumenter.cpp",
+        "//src:wasm-hdrs",
+        "//src/tools:tool-options.h"
+    ] + glob(["*.h"]),
+    additional_compiler_inputs = ["//src:wasm-delegations"],
+    deps = ["//src/support"],
+    copts = COPTS + ["-I$(@)/src"],
+    toolchains = TOOLCHAINS,
+    visibility = [
+        # "//src:__pkg__",
+        # "//src/analysis:__pkg__",
+        # "//src/ir:__pkg__"
+    ]
+)
+

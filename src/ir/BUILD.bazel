@@ -1,0 +1,50 @@
+load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
+
+COPTS = BASE_COPTS
+
+filegroup(
+    name = "hdrs",
+    srcs = glob(["*.h"]), # + ["//src:pass.h"],
+    visibility = ["//visibility:public"]
+)
+
+cc_library(
+    name = "ir",
+    srcs = [
+        "ExpressionAnalyzer.cpp",
+        "ExpressionManipulator.cpp",
+        "drop.cpp",
+        "eh-utils.cpp",
+        "export-utils.cpp",
+        "intrinsics.cpp",
+        "lubs.cpp",
+        "memory-utils.cpp",
+        "module-utils.cpp",
+        "names.cpp",
+        "possible-contents.cpp",
+        "properties.cpp",
+        "LocalGraph.cpp",
+        "LocalStructuralDominance.cpp",
+        "ReFinalize.cpp",
+        "stack-utils.cpp",
+        "table-utils.cpp",
+        "type-updating.cpp",
+        "module-splitting.cpp",
+        "//src:wasm-hdrs",
+    ] + glob(["*.h"]),
+    additional_compiler_inputs = ["//src:wasm-delegations"],
+    hdrs = ["branch-utils.h"],
+    deps = [
+        "//src/analysis",
+        "//src/cfg",
+        "//src/support"
+    ],
+    copts = COPTS + ["-I$(@)/src"],
+    toolchains = TOOLCHAINS,
+    visibility = [
+        "//src:__pkg__",
+        "//src/cfg:__pkg__",
+        "//src/passes:__pkg__"
+    ]
+)
+

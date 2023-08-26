@@ -1,0 +1,21 @@
+load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
+
+COPTS = BASE_COPTS
+
+cc_library(
+    name = "emscripten-optimizer",
+    srcs = [
+        "optimizer-shared.cpp",
+        "parser.cpp",
+        "simple_ast.cpp"
+    ] + glob(["*.h"]),
+    deps = ["//src/support"],
+    copts = COPTS + ["-I$(@)/src"],
+    toolchains = TOOLCHAINS,
+    visibility = [
+        "//src:__pkg__",
+        "//src/asmjs:__pkg__",
+        "//src/wasm:__pkg__"
+    ]
+)
+

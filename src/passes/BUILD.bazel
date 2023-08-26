@@ -1,0 +1,34 @@
+load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
+load(":BUILD.bzl", "intrinsics")
+
+COPTS = BASE_COPTS
+
+intrinsics(
+    name = "wasm_intrinsics",
+    template = "WasmIntrinsics.cpp.in",
+    output = "WasmIntrinsics.cpp"
+)
+
+cc_library(
+    name = "passes",
+    alwayslink = True,
+    srcs = glob(["*.cpp", "*.h"]) + [
+        ":WasmIntrinsics.cpp",
+        "//src/abi:hdrs",
+        "//src/dataflow:hdrs",
+        "//src:wasm-hdrs",
+    ],
+    additional_compiler_inputs = ["//src:wasm-delegations"],
+    deps = [
+        "//src/asmjs",
+        "//src/ir"
+        # "//src/support"
+    ],
+    copts = COPTS + ["-I$(@)/src"],
+    toolchains = TOOLCHAINS,
+    visibility = [
+        "//src/tools/wasm-split:__pkg__",
+        "//src:__pkg__",
+    ]
+)
+
