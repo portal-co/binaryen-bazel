@@ -1,22 +1,9 @@
-load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
-
-COPTS = BASE_COPTS
-
 exports_files(["fuzzing.h", "optimization-options.h",
                "tool-options.h"])
 
-# cc_library(
-#     name = "tools",
-#     srcs = [
-#     ] + glob(["*.h"]),
-#     additional_compiler_inputs = ["//src:wasm-delegations"],
-#     deps = ["//src/support"],
-#     copts = COPTS + ["-I$(@)/src"],
-#     toolchains = TOOLCHAINS,
-#     visibility = [
-#         "//src:__pkg__",
-#         "//src/analysis:__pkg__",
-#         "//src/ir:__pkg__"
-#     ]
-# )
+cc_binary(
+    name = "intrinsics_to_binary",
+    srcs = ["textfile_to_binary.c"],
+    visibility = ["//src/passes:__pkg__"]
+)
 

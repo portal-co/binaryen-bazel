@@ -1,18 +1,13 @@
 def _intrinsics_impl(ctx):
-    #"substitutions": attr.string_dict(),
-    substitutions = {
-        "@WASM_INTRINSICS_SIZE@": "99",
-        "@WASM_INTRINSICS_EMBED@": "\"bar\""
-    }
 
-    ctx.actions.expand_template(
-        template = ctx.file.template,
-        output = ctx.outputs.output,
-        substitutions = substitutions,
+    args = [ctx.file.data.path, ctx.outputs.output.path]
+
+    ctx.actions.run(
+        inputs  = [ctx.file.data],
+        outputs = [ctx.outputs.output],
+        arguments = args,
+        executable = ctx.executable._tool
     )
-    return [
-        DefaultInfo(files = depset([ctx.outputs.output])),
-    ]
 
 intrinsics = rule(
     implementation = _intrinsics_impl,
@@ -20,15 +15,15 @@ intrinsics = rule(
         "data": attr.label(
             mandatory = True,
             allow_single_file = True,
-            default = "wasm-intrinsics.wat"
-        ),
-        "template": attr.label(
-            mandatory = True,
-            allow_single_file = True,
-            default = "WasmIntrinsics.cpp.in"
         ),
         "output": attr.output(
-            mandatory = True,
+            mandatory = True
         ),
+        "_tool": attr.label(
+            allow_single_file = True,
+            executable = True,
+            cfg = "exec",
+            default = "//src/tools:intrinsics_to_binary"
+        )
     },
 )

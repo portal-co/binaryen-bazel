@@ -5,7 +5,7 @@ COPTS = BASE_COPTS
 
 intrinsics(
     name = "wasm_intrinsics",
-    template = "WasmIntrinsics.cpp.in",
+    data = "wasm-intrinsics.wat",
     output = "WasmIntrinsics.cpp"
 )
 
@@ -31,4 +31,3 @@ cc_library(
         "//src:__pkg__",
     ]
 )
-
