@@ -2,19 +2,23 @@ load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
 
 COPTS = BASE_COPTS
 
-exports_files(["asm_v_wasm.h", "gen-s-parser.inc"])
+exports_files([
+    "asm_v_wasm.h",
+    "gen-s-parser.inc",
+])
 
 filegroup(
     name = "wasm-hdrs",
-    srcs = glob(["*.h"]) + ["//src/ir:hdrs"],
+    srcs = glob(["*.h"]) + [
+        "//src/ir:hdrs"
+    ],
     visibility = [
         "//src/analysis:__pkg__",
         "//src/cfg:__pkg__",
         "//src/ir:__pkg__",
         "//src/passes:__pkg__",
         "//src/support:__pkg__",
-        "//src/tools/fuzzing:__pkg__",
-        "//src/tools/wasm-split:__pkg__",
+        "//src/tools:__subpackages__",
         "//src/wasm:__pkg__"
     ]
 )
@@ -30,20 +34,19 @@ filegroup(
         "//src/cfg:__pkg__",
         "//src/ir:__pkg__",
         "//src/passes:__pkg__",
-        "//src/tools/fuzzing:__pkg__",
-        "//src/tools/wasm-split:__pkg__",
+        "//src/tools:__subpackages__",
         "//src/wasm:__pkg__"
     ]
 )
 
 cc_library(
     name = "binaryen",
-    alwayslink = True,
     srcs = [
         "binaryen-c.cpp",
-        "binaryen-c.h"
+        "binaryen-c.h",
+        "wasm2js.h"
     ],
-    additional_compiler_inputs = [":wasm-delegations"],
+    textual_hdrs = [":wasm-delegations"],
     deps = [
         "//src/passes",
         "//src/wasm",

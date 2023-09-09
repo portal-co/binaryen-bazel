@@ -16,7 +16,6 @@ cc_library(
         ":WasmIntrinsics.cpp",
         "//src/abi:hdrs",
         "//src/dataflow:hdrs",
-        "//src:wasm-hdrs",
     ],
     additional_compiler_inputs = ["//src:wasm-delegations"],
     deps = [

@@ -1,6 +1,125 @@
+load("//config/cc:CONFIG.bzl", "BASE_COPTS")
+
+COPTS = BASE_COPTS + ["-Isrc"]
+
+DEPS  = ["//src:binaryen"]
+
 exports_files(["fuzzing.h", "optimization-options.h",
                "tool-options.h"])
 
+##########
+cc_binary(
+    name = "wasm2js",
+    srcs = [
+        "optimization-options.h",
+        "tool-options.h",
+        "wasm2js.cpp",
+        # "//src:wasm-hdrs",
+    ],
+    copts = COPTS,
+    deps  = DEPS,
+    visibility = ["//visibility:public"]
+)
+
+##########
+cc_binary(
+    name = "wasm-as",
+    srcs = [
+        "tool-options.h",
+        "tool-utils.h",
+        "wasm-as.cpp",
+    ],
+    copts = COPTS,
+    deps  = DEPS,
+    visibility = ["//visibility:public"]
+)
+
+cc_binary(
+    name = "wasm-ctor-eval",
+    srcs = [
+        "tool-options.h",
+        "wasm-ctor-eval.cpp",
+    ],
+    copts = COPTS,
+    deps  = DEPS,
+    visibility = ["//visibility:public"]
+)
+
+cc_binary(
+    name = "wasm-dis",
+    srcs = [
+        "tool-options.h",
+        "wasm-dis.cpp",
+    ],
+    copts = COPTS,
+    deps  = DEPS,
+    visibility = ["//visibility:public"]
+)
+
+cc_binary(
+    name = "wasm-emscripten-finalize",
+    srcs = [
+        "tool-options.h",
+        "wasm-emscripten-finalize.cpp",
+    ],
+    copts = COPTS,
+    deps  = DEPS,
+    visibility = ["//visibility:public"]
+)
+
+cc_binary(
+    name = "wasm-metadce",
+    srcs = [
+        "tool-options.h",
+        "wasm-metadce.cpp",
+    ],
+    copts = COPTS,
+    deps  = DEPS,
+    visibility = ["//visibility:public"]
+)
+
+cc_binary(
+    name = "wasm-opt",
+    srcs = [
+        "wasm-opt.cpp",
+        "execution-results.h",
+        "js-wrapper.h",
+        "optimization-options.h",
+        "spec-wrapper.h",
+        "tool-options.h",
+        "wasm2c-wrapper.h",
+    ],
+    copts = COPTS,
+    deps  = DEPS + ["//src/tools/fuzzing"],
+    visibility = ["//visibility:public"]
+)
+
+cc_binary(
+    name = "wasm-reduce",
+    srcs = [
+        "tool-options.h",
+        "wasm-reduce.cpp",
+    ],
+    copts = COPTS + [
+        "-Wno-unused-but-set-parameter",  # opt compiles
+    ],
+    deps  = DEPS,
+    visibility = ["//visibility:public"]
+)
+
+cc_binary(
+    name = "wasm-shell",
+    srcs = [
+        "execution-results.h",
+        "wasm-shell.cpp",
+    ],
+    copts = COPTS,
+    deps  = DEPS,
+    visibility = ["//visibility:public"]
+)
+
+################################################################
+## build tool:
 cc_binary(
     name = "intrinsics_to_binary",
     srcs = ["textfile_to_binary.c"],

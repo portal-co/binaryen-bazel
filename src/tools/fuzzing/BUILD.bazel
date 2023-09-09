@@ -18,7 +18,7 @@ cc_library(
     copts = COPTS + ["-I$(@)/src"],
     toolchains = TOOLCHAINS,
     visibility = [
-        # "//src:__pkg__",
+        "//src/tools:__pkg__",
         # "//src/analysis:__pkg__",
         # "//src/ir:__pkg__"
     ]

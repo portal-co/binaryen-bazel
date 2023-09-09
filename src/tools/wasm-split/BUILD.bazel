@@ -7,19 +7,13 @@ cc_binary(
     srcs = [
         "//src:wasm-hdrs",
     ] + glob(["*.h"]),
-    # additional_compiler_inputs = ["//src:wasm-delegations"],
     deps = [
         "//src:binaryen",
         ":wasm-split-impl",
-        # "//src/support"
     ],
     copts = COPTS + ["-I$(@)/src"],
     toolchains = TOOLCHAINS,
-    visibility = [
-        # "//src:__pkg__",
-        # "//src/analysis:__pkg__",
-        # "//src/ir:__pkg__"
-    ]
+    visibility = ["//visibility:public"]
 )
 
 cc_library(
@@ -35,10 +29,5 @@ cc_library(
     deps = ["//src/support"],
     copts = COPTS + ["-I$(@)/src"],
     toolchains = TOOLCHAINS,
-    visibility = [
-        # "//src:__pkg__",
-        # "//src/analysis:__pkg__",
-        # "//src/ir:__pkg__"
-    ]
 )
 

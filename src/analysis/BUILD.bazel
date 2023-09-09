@@ -5,7 +5,6 @@ COPTS = BASE_COPTS
 cc_library(
     name = "analysis",
     srcs = glob(["*.cpp", "*.h"]) + [
-        "//src:wasm-hdrs",
         "//src/cfg:cfg-traversal.h"
     ],
     additional_compiler_inputs = ["//src:wasm-delegations"],

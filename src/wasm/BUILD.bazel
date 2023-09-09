@@ -22,7 +22,6 @@ cc_library(
         "wasm-validator.cpp",
         "wat-lexer.cpp",
         "wat-parser.cpp",
-        # "//src/ir:hdrs",
         "//src:wasm-hdrs",
     ] + glob(["*.h"]),
     additional_compiler_inputs = [
