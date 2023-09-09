@@ -68,6 +68,17 @@ cc_binary(
 )
 
 cc_binary(
+    name = "wasm-merge",
+    srcs = [
+        "tool-options.h",
+        "wasm-merge.cpp",
+    ],
+    copts = COPTS,
+    deps  = DEPS,
+    visibility = ["//visibility:public"]
+)
+
+cc_binary(
     name = "wasm-metadce",
     srcs = [
         "tool-options.h",

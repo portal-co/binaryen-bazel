@@ -41,6 +41,9 @@ filegroup(
 
 cc_library(
     name = "binaryen",
+    ## FIXME: select static v. dynamic
+    linkstatic = True,
+    defines = ["BUILD_STATIC_LIBRARY"],
     srcs = [
         "binaryen-c.cpp",
         "binaryen-c.h",
