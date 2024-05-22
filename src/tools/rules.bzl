@@ -8,7 +8,7 @@ def wasm2js(ctx, file):
         executable = ctx.executable._wasm2js,
         inputs = [file],
         outputs = [new],
-        arguments = [fiel.path, "-o", new.path],
+        arguments = [file.path, "-o", new.path],
     )
     return new
 
