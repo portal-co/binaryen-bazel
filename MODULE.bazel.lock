@@ -1,9 +1,10 @@
 {
   "lockFileVersion": 6,
-  "moduleFileHash": "f7e0114837623d697b4ce31cd3d491b7cc46241e938224b480eb023e1c2cca9c",
+  "moduleFileHash": "caffd4158b3e33914c9f1cb5e8153182eb03998aaaed62527e978c71f4262a21",
   "flags": {
     "cmdRegistries": [
       "https://raw.githubusercontent.com/obazl/registry/main/",
+      "https://raw.githubusercontent.com/portal-co/registry/main",
       "https://bcr.bazel.build"
     ],
     "cmdModuleOverrides": {},
@@ -19,7 +20,7 @@
   "moduleDepGraph": {
     "<root>": {
       "name": "binaryen",
-      "version": "114.0.1",
+      "version": "114.0.4",
       "key": "<root>",
       "repoName": "binaryen",
       "executionPlatformsToRegister": [],
@@ -28,6 +29,7 @@
       "deps": {
         "platforms": "platforms@0.0.8",
         "bazel_skylib": "bazel_skylib@1.5.0",
+        "cc_config": "cc_config@2.0.0",
         "rules_python": "rules_python@0.22.1",
         "rules_rust": "rules_rust@0.44.0",
         "bazel_tools": "bazel_tools@_",
@@ -86,6 +88,34 @@
           ],
           "integrity": "sha256-zVWgYudjuTSZIfD124w5MyiNyLpPdt2UFqrGis7jy5Q=",
           "strip_prefix": "",
+          "remote_patches": {},
+          "remote_patch_strip": 0
+        }
+      }
+    },
+    "cc_config@2.0.0": {
+      "name": "cc_config",
+      "version": "2.0.0",
+      "key": "cc_config@2.0.0",
+      "repoName": "cc_config",
+      "executionPlatformsToRegister": [],
+      "toolchainsToRegister": [],
+      "extensionUsages": [],
+      "deps": {
+        "platforms": "platforms@0.0.8",
+        "bazel_skylib": "bazel_skylib@1.5.0",
+        "bazel_tools": "bazel_tools@_",
+        "local_config_platform": "local_config_platform@_"
+      },
+      "repoSpec": {
+        "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+        "ruleClassName": "http_archive",
+        "attributes": {
+          "urls": [
+            "https://github.com/portal-co/cc_config/archive/refs/heads/main.zip"
+          ],
+          "integrity": "sha256-pi94IyNgk+ijV8CjrJmOGBnJiHpF++ljf9v35TYCMWI=",
+          "strip_prefix": "cc_config-main",
           "remote_patches": {},
           "remote_patch_strip": 0
         }

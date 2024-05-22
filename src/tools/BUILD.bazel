@@ -1,11 +1,14 @@
-load("//config/cc:CONFIG.bzl", "BASE_COPTS")
+load("//config/cc:CONFIG.bzl", "BASE_COPTS", "TOOLCHAINS")
 
-COPTS = BASE_COPTS + ["-Isrc"]
+COPTS = BASE_COPTS + ["-I$(@)/src"]
 
-DEPS  = ["//src:binaryen"]
+DEPS = ["//src:binaryen"]
 
-exports_files(["fuzzing.h", "optimization-options.h",
-               "tool-options.h"])
+exports_files([
+    "fuzzing.h",
+    "optimization-options.h",
+    "tool-options.h",
+])
 
 ##########
 cc_binary(
@@ -17,8 +20,9 @@ cc_binary(
         # "//src:wasm-hdrs",
     ],
     copts = COPTS,
-    deps  = DEPS,
-    visibility = ["//visibility:public"]
+    toolchains = TOOLCHAINS,
+    visibility = ["//visibility:public"],
+    deps = DEPS,
 )
 
 ##########
@@ -30,8 +34,9 @@ cc_binary(
         "wasm-as.cpp",
     ],
     copts = COPTS,
-    deps  = DEPS,
-    visibility = ["//visibility:public"]
+    toolchains = TOOLCHAINS,
+    visibility = ["//visibility:public"],
+    deps = DEPS,
 )
 
 cc_binary(
@@ -41,8 +46,9 @@ cc_binary(
         "wasm-ctor-eval.cpp",
     ],
     copts = COPTS,
-    deps  = DEPS,
-    visibility = ["//visibility:public"]
+    toolchains = TOOLCHAINS,
+    visibility = ["//visibility:public"],
+    deps = DEPS,
 )
 
 cc_binary(
@@ -52,8 +58,9 @@ cc_binary(
         "wasm-dis.cpp",
     ],
     copts = COPTS,
-    deps  = DEPS,
-    visibility = ["//visibility:public"]
+    toolchains = TOOLCHAINS,
+    visibility = ["//visibility:public"],
+    deps = DEPS,
 )
 
 cc_binary(
@@ -63,8 +70,9 @@ cc_binary(
         "wasm-emscripten-finalize.cpp",
     ],
     copts = COPTS,
-    deps  = DEPS,
-    visibility = ["//visibility:public"]
+    toolchains = TOOLCHAINS,
+    visibility = ["//visibility:public"],
+    deps = DEPS,
 )
 
 cc_binary(
@@ -74,8 +82,9 @@ cc_binary(
         "wasm-merge.cpp",
     ],
     copts = COPTS,
-    deps  = DEPS,
-    visibility = ["//visibility:public"]
+    toolchains = TOOLCHAINS,
+    visibility = ["//visibility:public"],
+    deps = DEPS,
 )
 
 cc_binary(
@@ -85,24 +94,26 @@ cc_binary(
         "wasm-metadce.cpp",
     ],
     copts = COPTS,
-    deps  = DEPS,
-    visibility = ["//visibility:public"]
+    toolchains = TOOLCHAINS,
+    visibility = ["//visibility:public"],
+    deps = DEPS,
 )
 
 cc_binary(
     name = "wasm-opt",
     srcs = [
-        "wasm-opt.cpp",
         "execution-results.h",
         "js-wrapper.h",
         "optimization-options.h",
         "spec-wrapper.h",
         "tool-options.h",
+        "wasm-opt.cpp",
         "wasm2c-wrapper.h",
     ],
     copts = COPTS,
-    deps  = DEPS + ["//src/tools/fuzzing"],
-    visibility = ["//visibility:public"]
+    toolchains = TOOLCHAINS,
+    visibility = ["//visibility:public"],
+    deps = DEPS + ["//src/tools/fuzzing"],
 )
 
 cc_binary(
@@ -114,8 +125,9 @@ cc_binary(
     copts = COPTS + [
         "-Wno-unused-but-set-parameter",  # opt compiles
     ],
-    deps  = DEPS,
-    visibility = ["//visibility:public"]
+    toolchains = TOOLCHAINS,
+    visibility = ["//visibility:public"],
+    deps = DEPS,
 )
 
 cc_binary(
@@ -125,8 +137,9 @@ cc_binary(
         "wasm-shell.cpp",
     ],
     copts = COPTS,
-    deps  = DEPS,
-    visibility = ["//visibility:public"]
+    toolchains = TOOLCHAINS,
+    visibility = ["//visibility:public"],
+    deps = DEPS,
 )
 
 ################################################################
@@ -134,6 +147,5 @@ cc_binary(
 cc_binary(
     name = "intrinsics_to_binary",
     srcs = ["textfile_to_binary.c"],
-    visibility = ["//src/passes:__pkg__"]
+    visibility = ["//src/passes:__pkg__"],
 )
-
