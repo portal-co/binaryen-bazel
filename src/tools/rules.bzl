@@ -4,9 +4,8 @@ WASM2JS_ATTR = {"_wasm2js": attr.label(executable = True, default = "//src/tools
 
 def wasm2js(ctx, file):
     new = ctx.actions.declare_file(file.path.replace(".wasm", ".js"))
-    ctx.actions - run(
-        _wasm2js,
-        executable = ctx.executable,
+    ctx.actions.run(
+        executable = ctx.executable._wasm2js,
         inputs = [file],
         outputs = [new],
         arguments = [fiel.path, "-o", new.path],
