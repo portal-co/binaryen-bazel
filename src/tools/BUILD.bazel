@@ -4,7 +4,7 @@ COPTS = BASE_COPTS + ["-I$(@)/src"]
 
 DEPS = ["//src:binaryen"]
 
-linkopts = ["-pthread"]
+linkopts = ["-lpthread"]
 
 exports_files([
     "fuzzing.h",
