@@ -3,7 +3,7 @@ load("@rules_rust//wasm_bindgen/private:wasm_bindgen.bzl", "WASM_BINDGEN_ATTR", 
 WASM2JS_ATTR = {"_wasm2js": attr.label(executable = True, default = "//src/tools:wasm2js", cfg = "exec")}
 
 def wasm2js(ctx, file):
-    new = ctx.actions.declare_file(file.basename.replace(".wasm", ".js"),file)
+    new = ctx.actions.declare_file(file.basename.replace(".wasm", ".js"),sibling = file)
     ctx.actions.run(
         executable = ctx.executable._wasm2js,
         inputs = [file],
